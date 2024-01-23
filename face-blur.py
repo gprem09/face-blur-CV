@@ -1,1 +1,1 @@
-print('testing pycharm git')
+print('hello world')
