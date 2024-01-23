@@ -8,11 +8,12 @@ while True:
     if not ret:
         break
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    faces = face_cascade.detectMultiScale(gray, 1.1, 4)
+    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.05, minNeighbors=5, minSize=(30, 30))
     for (x, y, w, h) in faces:
         face = frame[y:y+h, x:x+w]
-        face = cv2.GaussianBlur(face, (99, 99), 30)
-        frame[y:y+face.shape[0], x:x+face.shape[1]] = face
+        blur_size = int(min(w, h) * 0.3) | 1
+        face = cv2.GaussianBlur(face, (blur_size, blur_size), 0)
+        frame[y:y+h, x:x+w] = face
     cv2.imshow('Webcam', frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
